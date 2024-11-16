@@ -1,4 +1,4 @@
-package net.examplemod;
+package net.discordsrv_modded;
 
 import com.google.common.base.Suppliers;
 import dev.architectury.registry.CreativeTabRegistry;
@@ -13,8 +13,8 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Supplier;
 
-public class ExampleMod {
-    public static final String MOD_ID = "examplemod";
+public class DiscordSRV_Modded {
+    public static final String MOD_ID = "discordsrv_modded";
     // We can use this if we don't want to use DeferredRegister
     public static final Supplier<RegistrarManager> REGISTRIES = Suppliers.memoize(() -> RegistrarManager.get(MOD_ID));
 
@@ -22,11 +22,11 @@ public class ExampleMod {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(MOD_ID, Registries.CREATIVE_MODE_TAB);
     public static final RegistrySupplier<CreativeModeTab> EXAMPLE_TAB = TABS.register("example_tab", () ->
             CreativeTabRegistry.create(Component.translatable("itemGroup." + MOD_ID + ".example_tab"),
-                    () -> new ItemStack(ExampleMod.EXAMPLE_ITEM.get())));
+                    () -> new ItemStack(DiscordSRV_Modded.EXAMPLE_ITEM.get())));
     
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD_ID, Registries.ITEM);
     public static final RegistrySupplier<Item> EXAMPLE_ITEM = ITEMS.register("example_item", () ->
-            new Item(new Item.Properties().arch$tab(ExampleMod.EXAMPLE_TAB)));
+            new Item(new Item.Properties().arch$tab(DiscordSRV_Modded.EXAMPLE_TAB)));
     
     public static void init() {
         TABS.register();

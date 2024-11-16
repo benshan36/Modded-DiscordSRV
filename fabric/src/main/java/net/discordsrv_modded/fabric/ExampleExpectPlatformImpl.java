@@ -1,7 +1,7 @@
-package net.examplemod.forge;
+package net.discordsrv_modded.fabric;
 
-import net.examplemod.ExampleExpectPlatform;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.discordsrv_modded.ExampleExpectPlatform;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
 
@@ -10,6 +10,6 @@ public class ExampleExpectPlatformImpl {
      * This is our actual method to {@link ExampleExpectPlatform#getConfigDirectory()}.
      */
     public static Path getConfigDirectory() {
-        return FMLPaths.CONFIGDIR.get();
+        return FabricLoader.getInstance().getConfigDir();
     }
 }
