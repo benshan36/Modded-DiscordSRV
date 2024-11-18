@@ -1,6 +1,6 @@
-package com.benshan36.discordsrv_modded.mixin;
+package com.benshan36.DiscordSRV_Modded.mixin;
 
-import com.benshan36.discordsrv_modded.DiscordSRV_Modded;
+import com.benshan36.DiscordSRV_Modded.DiscordSRV_Modded;
 import net.minecraft.client.gui.screens.TitleScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

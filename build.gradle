@@ -1,68 +1,63 @@
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT" apply false
-    id "dev.architectury.loom" version "1.7-SNAPSHOT"
-    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
-    id "com.modrinth.minotaur" version "2.+" apply false
+    id 'maven-publish'
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'dev.architectury.loom' version '1.7-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 architectury {
-    minecraft = project.minecraft_version
+    platformSetupLoomIde()
+    fabric()
+    neoforge()
 }
 
-allprojects {
-    group = rootProject.maven_group
-    version = rootProject.mod_version
-
-
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
-subprojects {
-    apply plugin: 'dev.architectury.loom'
-    apply plugin: 'architectury-plugin'
-    apply plugin: 'maven-publish'
-    apply plugin: 'com.modrinth.minotaur'
-    apply plugin: 'com.github.johnrengelman.shadow'
-    base {
-        // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
-        archivesName = "$rootProject.archives_name-$project.name-MC$rootProject.minecraft_version"
-    }
-    repositories {
-        maven { url "https://repo.erdbeerbaerlp.de/repository/maven-public/" }
 
-    }
+group = 'com.benshan36.discordsrv_modded'
+version = '1.0.0'
+archivesBaseName = 'DiscordSRV-Modded'
 
-    dependencies {
-        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
-        mappings loom.officialMojangMappings()
-    }
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.architectury.dev' }
+    maven { url = 'https://maven.fabricmc.net' }
+    maven { url = 'https://maven.neoforged.net' }
+}
 
-    java {
-        // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-        // if it is present.
-        // If you remove this line, sources will not be generated.
-        withSourcesJar()
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    modApi "dev.architectury:architectury:${architectury_version}"
+}
 
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        it.options.release = 21
-    }
-    modrinth{
-        if (project.hasProperty('modrinth.apikey')) { // $GRADLE_USER_HOME/gradle.properties
-            token = project.getProperty("modrinth.apikey") // Use an environment property!
-            projectId = 'd6QQqKj0'
-            versionNumber = "${project.mod_version}-${project.minecraft_version}"
-            versionName = "DiscordSRV-Modded ${project.mod_version} (MC ${project.minecraft_version})"
-            uploadFile = remapJar
-            changelog = project.changelog
-            gameVersions = ["${project.minecraft_version}"]
-            loaders = ['fabric', 'forge']
-            dependencies {
-                required.project "fabric-api"
-            }
-
-            versionType = project.releaseType.toUpperCase()
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
         }
+    }
+
+    repositories {
+        maven {
+            name = "LocalRepo"
+            url = uri("${buildDir}/repo")
+        }
+    }
+}
+
+tasks {
+    jar {
+        archiveBaseName.set('DiscordSRV-Modded')
+        archiveVersion.set(version)
+    }
+
+    shadowJar {
+        archiveClassifier.set('')
     }
 }

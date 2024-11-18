@@ -6,7 +6,7 @@
   "mixins": [
   ],
   "client": [
-    "ExampleMixin"
+    "com.benshan36.DiscordSRV_Modded.mixin.ExampleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

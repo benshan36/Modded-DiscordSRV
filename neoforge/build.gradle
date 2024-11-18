@@ -1,20 +1,20 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.github.johnrengelman.shadow"
 }
 
 architectury {
     platformSetupLoomIde()
-    forge()
+    neoforge()
 }
 
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
-
     forge {
+        // Reference the existing access widener path without reassigning
         convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+        extraAccessWideners.add(project(":common").loom.accessWidenerPath.get().asFile.name)
     }
 }
+
 
 configurations {
     common
@@ -25,12 +25,12 @@ configurations {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
     // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modApi "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 }
 
 processResources {
@@ -68,7 +68,7 @@ components.java {
 
 publishing {
     publications {
-        mavenForge(MavenPublication) {
+        mavenNeoForged(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
             from components.java
         }
